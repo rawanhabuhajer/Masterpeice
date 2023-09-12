@@ -7,7 +7,7 @@ const UsersRouter = require("./routes/UsersRouter");
 const ExpertsRouter = require("./routes/ExpertsRouter");
 const ServicesRouter = require("./routes/ServicesRouter");
 const reviewsRouter = require("./routes/ReviewsRouter");
-const BookingRouter = require('./routes/BookingRoutes')
+const BookingRouter = require("./routes/BookingRoutes");
 // express app
 const app = express();
 
@@ -31,7 +31,7 @@ app.use("/api/book", BookingRouter);
 
 //connect to db
 mongoose
-  .connect(process.env.DATABASE_LOCAL)
+  .connect(process.env.DATABASE_GLOBAL)
   .then(() => console.log("DB connection successful!"));
 
 const port = process.env.PORT || 8000;

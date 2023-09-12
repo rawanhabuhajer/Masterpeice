@@ -33,7 +33,7 @@ const Register = () => {
   
   async function SignupHandler() {
     
-    const res = await fetch("http://192.168.0.106:8000/api/user/signup", {
+    const res = await fetch("http://10.0.2.2:8000/api/user/signup", {
       method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,0 +1,38 @@
+.side__bar {
+width: 6rem;
+height: 100%;
+flex-shrink: 0;
+border-radius: 0px 25px 0px 0px;
+background: #FFF;
+box-shadow: rgba(233, 233, 233, 0.559) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+display: flex;
+flex-direction: column;
+align-items:center;
+justify-content: space-between;
+padding-bottom: 1.5rem;
+padding-top: 1.5rem;
+}
+.top__icons__container{
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 5rem;
+
+}
+.logo{
+width: 60%;
+}
+.icons__container{
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 2rem;
+}
+.icons__container img{
+width: 55%;   
+}
+.logout img{
+width:70%;
+}

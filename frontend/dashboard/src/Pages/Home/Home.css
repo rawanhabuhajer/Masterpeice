@@ -1,0 +1,227 @@
+:root {
+--primaryblue:#62DFF0;
+--Secondaryblue: #E9FBFD;
+--white: #ffffff;
+--black:#222222;
+}
+
+.home__container {  
+display: grid;
+grid-template-columns: 0.17fr 1.6fr 0.9fr;
+grid-template-rows: 0.3fr 1.7fr;
+grid-auto-columns: 1fr;
+gap: 0px 5px;
+grid-auto-flow: row;
+grid-template-areas:
+"sidebar top top"
+"sidebar main main";
+}
+.sidebar {
+grid-area: sidebar;
+}
+.main {
+grid-area: main; 
+display: flex;
+flex-direction: column;
+align-items: center;
+
+}
+.top { grid-area: top; }
+.rigth_side { grid-area: rigth_side; }
+
+.home__title {
+color: #3a3a3a;
+font-size: 20px;
+font-weight: 600;
+margin-left: 2.22rem;
+margin-bottom: 0.5rem;
+display: grid;
+justify-self: start;
+align-self: self-start;
+}
+.chart__card{
+width: 95%;
+height: 410px;
+flex-shrink: 0;
+border-radius: 20px;
+background: var(--white);
+box-shadow: 0px 2px 6px 0px rgba(13, 10, 44, 0.08);
+position: relative;
+padding-left: 2.22rem;
+padding-right: 2.22rem;
+margin-left: 2rem;
+}
+.line{
+margin: 0 auto !important;
+position: absolute;
+top:3rem;
+
+}
+.chart__label__container{
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-radius: 14.769px;
+padding-top: 1rem;
+}
+.right__chart{ 
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 1rem;
+background: #F8F8FF;
+width: 25%;
+height: 37.454px;
+flex-shrink: 0;
+border-radius: 10px;
+font-size: 80%;
+
+}
+.left__chart :nth-child(1){
+color: #9291A5;
+font-size: 14px;
+font-style: normal;
+line-height: 20px;
+
+}
+.left__chart :nth-child(2){
+color: var(--black);
+font-size: 28px;
+font-weight: 600;
+line-height: 48px;
+}
+.rigth_side{
+padding-top: 2.5rem;
+}
+.service__list{
+width: 95%;
+height: 550px;
+flex-shrink: 0;
+border-radius: 8px;
+background: #FFF;
+box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.15);
+margin-bottom: 2rem;
+
+}
+
+::-webkit-scrollbar {
+width: 10px;
+height: 70px;
+}
+
+::-webkit-scrollbar-track {
+background-color: #E0F9FC;
+border-radius: 10px;
+}
+.service__list__title{
+width: 96%;
+height: 50px;
+flex-shrink: 0;
+border: 1px solid #FAFAFA;
+background: #FFF;
+box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+font-weight:bold ;
+color: #3a3a3a;
+font-size: 15px;
+}
+.service__list__title div{
+width: 20%;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.Services__category{
+display: flex;
+align-self: start;
+margin: 1rem 0 1rem 2.5rem;
+font-weight: 600;
+}
+.service__data__container{
+width: 100%;
+height:430px;
+overflow-y: scroll;
+}
+.service__data{
+width: 97%;
+height: 50px;
+flex-shrink: 0;
+border: 1px solid #cbcbcb6c;
+display: flex;
+justify-content: space-between;
+align-items: center;
+font-size: 12px;
+margin-bottom: 0.5rem;
+margin-left: 1rem;
+}
+.service__data:hover{
+background-color:#ebfdff;
+border: none;
+
+
+}
+.service__data div{
+width: 25%;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.service__icon__container{
+    display: flex;
+    gap: 0.5rem;
+padding-left: 3rem;
+}
+.service__icon__container img{
+width: 18px;
+}
+
+.right__chart__card{
+width: 85%;
+height:232px;
+flex-shrink: 0;
+border-radius: 20px;
+background: var(--white);
+box-shadow: 0px 2px 6px 0px rgba(13, 10, 44, 0.08);
+margin: 0 auto 2.5rem auto;
+}
+.child__chart__card{
+    padding: 1rem 0 0 1.5rem;
+}
+.child__chart__card :nth-child(1){
+    font-size: 10px;
+    color: gray;
+}
+.child__chart__card :nth-child(2){
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--black);
+}
+.child__chart__card :nth-child(3){
+    font-size: 22px;
+    font-weight: 600;
+    color: #3a3a3a;
+    
+
+}
+.hr{
+    width: 90%;
+    margin:0.5rem auto 0 auto;
+    color: #cbcbcb;
+}
+.addNew{
+    background-color: #FFF;
+    width:7rem;
+    height: fit-content;
+    padding: 0.5rem;
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px 0px rgba(13, 10, 44, 0.08);
+text-align: center;
+font-size: 12px;
+margin-bottom: 0.5rem;
+display: flex;
+gap: 0.5rem;
+justify-content: center;
+}

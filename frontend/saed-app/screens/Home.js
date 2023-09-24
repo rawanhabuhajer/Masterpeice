@@ -1,21 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect , useContext} from "react";
 import {
   Text,
   View,
   ScrollView,
   Pressable,
   Image,
-  StatusBar,
   ImageBackground,
   Dimensions,
-  Platform,
+  ActivityIndicator,
+  StyleSheet
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { SliderBox } from "react-native-image-slider-box";
-import LinearGradient from "react-native-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useBooksContext } from "../Hooks/UseBookContext";
 import { FontAwesome } from "@expo/vector-icons";
+import { UserContext } from "../context/AuthContext";
+
 const Home = () => {
+  const { dispatch } = useBooksContext();
+  const { user, setUser } = useContext(UserContext);
+
+  const [data, setData] = useState(null);
   const images = [
     require("../assets/img/girl2.png"),
     require("../assets/img/lundry.png"),
@@ -23,14 +30,79 @@ const Home = () => {
   ];
   const { width } = Dimensions.get("window");
   const height = (width * 80) / 100;
-  const [os, setOs] = useState(Platform.OS);
-  const [barColor, setBarColor] = useState();
+  const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const storedData = await AsyncStorage.getItem("user");
+        console.log("Stored Data:", storedData);
+        dispatch({type : "ADD_BOOK" , payload : user });
+        setIsLoading(false);
+        if (storedData !== null) {
+          setIsLoading(false);
+
+          setData(JSON.parse(storedData));
+        } else {
+          setIsLoading(false);
+          setData(null);
+        }
+      } catch (error) {
+        setIsLoading(false);
+        console.error("Error retrieving data from AsyncStorage:", error);
+      }
+    };
+
+    const fetchExperts = async () => {
+      try {
+        const response = await axios.get(
+          "https://vercel-9nlvq4v5v-rawanhabuhajer.vercel.app/api/experts"
+        );
+        if (response.status === 200) {
+          const ExpertsData = response.data.data.experts;
+ 
+          setExperts(ExpertsData);
+         
+
+          setIsLoading(false);
+        } else {
+          setError("Unexpected response status: " + response.status);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        if (error.response) {
+          const errorMessage = error.response.data.error;
+          setError(errorMessage);
+          setIsLoading(false);
+        } else if (error.request) {
+          setError("Network request failed");
+          setIsLoading(false);
+        } else {
+          setError("Unexpected error: " + error.message);
+          setIsLoading(false);
+        }
+      }
+    };
+    console.log("hello",experts);
+
+    fetchExperts();
+    fetchData();
+
+  }, []);
+
+  if (isLoading) {
+    return (
+      <>
+        <View style={[styles.container, styles.horizontal]}>
+          <ActivityIndicator size="large" color="#62DFF0" />
+        </View>
+      </>
+    );
+  }
+
   return (
     <>
-      {os === "android" && (
-        <StatusBar barStyle={"dark-content"} backgroundColor={barColor} />
-      )}
-      {os === "ios" && <View style={{ marginTop: 50 }}></View>}
 
       <ScrollView style={{ backgroundColor: "#fff" }}>
         <ImageBackground
@@ -101,8 +173,9 @@ const Home = () => {
                 color: "gray",
               }}
             >
-              Carolina Robinson
+              {data ? data.username : "No data found"}
             </Text>
+
             <Text
               style={{
                 fontWeight: 400,
@@ -257,6 +330,7 @@ const Home = () => {
           }}
         >
           <Pressable
+            onPress={() => navigation.navigate("Categories")}
             style={{
               width: 110,
               height: 110,
@@ -283,6 +357,7 @@ const Home = () => {
             <Text style={{ fontWeight: 500, fontSize: 12 }}>Home services</Text>
           </Pressable>
           <Pressable
+            onPress={() => navigation.navigate("Categories")}
             style={{
               width: 110,
               height: 110,
@@ -311,6 +386,7 @@ const Home = () => {
             </Text>
           </Pressable>
           <Pressable
+            onPress={() => navigation.navigate("Categories")}
             style={{
               width: 110,
               height: 110,
@@ -337,6 +413,7 @@ const Home = () => {
             <Text style={{ fontWeight: 500, fontSize: 12 }}>Car services</Text>
           </Pressable>
           <Pressable
+            onPress={() => navigation.navigate("Categories")}
             style={{
               width: 110,
               height: 110,
@@ -391,6 +468,7 @@ const Home = () => {
               marginLeft: 15,
               marginTop: 25,
               gap: 20,
+              marginBottom:35
             }}
           >
             <View
@@ -531,139 +609,21 @@ const Home = () => {
             </View>
           </Pressable>
         </ScrollView>
-        <View
-          style={{
-            marginTop: 45,
-            marginLeft: 15,
-            display: "flex",
-            flexDirection: "row",
-            gap: 15,
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontWeight: 700,
-              fontSize: 16,
-            }}
-          >
-            Top Services
-          </Text>
-          <FontAwesome name="sort-amount-desc" size={18} color="#62DFF0" />
-        </View>
-        <View
-          style={{
-            marginTop: 25,
-            display: "flex",
-            gap: 12,
-            alignItems: "center",
-            marginBottom: 25,
-          }}
-        >
-          <View
-            style={{
-              width: "90%",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 15,
-              alignSelf: "center",
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              backgroundColor: "#EFFEFF",
-              borderRadius: 5,
-              marginTop: 5,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/top.png")}
-              style={{
-                width: 30,
-                height: 30,
-                resizeMode: "contain",
-                marginLeft: 5,
-              }}
-            />
-            <Text
-              style={{
-                fontWeight: 500,
-                fontSize: 15,
-                color: "#303030",
-              }}
-            >
-              Home service
-            </Text>
-          </View>
-          <View
-            style={{
-              width: "90%",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 15,
-              alignSelf: "center",
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              backgroundColor: "#EFFEFF",
-              borderRadius: 5,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/top.png")}
-              style={{
-                width: 30,
-                height: 30,
-                resizeMode: "contain",
-                marginLeft: 5,
-              }}
-            />
-            <Text
-              style={{
-                fontWeight: 500,
-                fontSize: 15,
-                color: "#303030",
-              }}
-            >
-              Deep cleaning
-            </Text>
-          </View>
-          <View
-            style={{
-              width: "90%",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 15,
-              alignSelf: "center",
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              backgroundColor: "#EFFEFF",
-              borderRadius: 5,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/top.png")}
-              style={{
-                width: 30,
-                height: 30,
-                resizeMode: "contain",
-                marginLeft: 5,
-              }}
-            />
-            <Text
-              style={{
-                fontWeight: 500,
-                fontSize: 15,
-                color: "#303030",
-              }}
-            >
-              Pest control
-            </Text>
-          </View>
-        </View>
+      
       </ScrollView>
     </>
+
   );
 };
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
+});
 export default Home;

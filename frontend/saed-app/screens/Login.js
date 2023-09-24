@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   Text,
   View,
@@ -6,44 +6,63 @@ import {
   Image,
   StatusBar,
   KeyboardAvoidingView,
+  TouchableOpacity,
+  TextInput,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
-import Button from "../components/Button";
-import InputField from "../components/InputField";
+import axios from "axios";
+import { Entypo } from "@expo/vector-icons";
+ import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserContext } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  
   const navigation = useNavigation();
+  const [error, setError] = useState("");
+  const [userData, setUserData] = useState(null);
+  const { user, setUser } = useContext(UserContext);
+  const fetchPost = async () => {
+    try {
+      const response = await axios.post(
+        "https://vercel-9nlvq4v5v-rawanhabuhajer.vercel.app/api/user/signin",
+        {
+          email,
+          password,
+        }
+      );
 
-  async function loginUser() {
+      if (response.status === 200) {
+        const userData = response.data;
+        setUserData(userData);
 
-    const response = await fetch('http://192.168.1.179:8000/api/user/signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
-
-    const data = await response.json();
-    console.log(data);
-    if(data.user){
-   
-      alert("login successfully")
-      navigation.navigate('Home')
-    }else{
-      alert("Please check your username or password")
-
+        await AsyncStorage.setItem("user", JSON.stringify(userData));
+        const user = response.data;
+        console.log(user);
+        setUser(user)
+        navigation.navigate("Main");
+      } else {
+        setError("Unexpected response status: " + response.status);
+      }
+    } catch (error) {
+      if (error.response) {
+        const errorMessage = error.response.data.error;
+        setError(errorMessage);
+      } else if (error.request) {
+        setError("Network request failed");
+      } else {
+        setError("Unexpected error: " + error.message);
       }
     }
+  };
 
+  const onSignInPress = async () => {
+    try {
+      await fetchPost();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -94,36 +113,115 @@ const Login = () => {
             </Text>
           </View>
 
-          <View style={{ marginTop: 30 }}>
-            {/* Input field for name */}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
+              backgroundColor: "#F4FEFF",
+              paddingVertical: 5,
+              borderRadius: 5,
+              marginTop: 20,
+            }}
+          >
+            <Entypo
+              name="user"
+              size={20}
+              color="#CBC7C7"
+              style={{
+                marginLeft: 15,
+              }}
+            />
 
-            <InputField
+            <TextInput
               value={email}
-              onChangeText={text => setEmail(text)}
-              placeholder={"Enter your Email"}
-              user={"email"}
+              onChangeText={(text) => setEmail(text)}
+              style={{
+                marginVertical: 10,
+                width: 290,
+                fontSize: 14,
+                paddingLeft: 5,
+              }}
+              placeholder={"Enter your email"}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
+              backgroundColor: "#F4FEFF",
+              paddingVertical: 5,
+              borderRadius: 5,
+              marginTop: 20,
+            }}
+          >
+            <Entypo
+              name="user"
+              size={20}
+              color="#CBC7C7"
+              style={{
+                marginLeft: 15,
+              }}
             />
 
-            <InputField
+            <TextInput
               value={password}
-              onChangeText={text => setPassword(text)}
+              onChangeText={(text) => setPassword(text)}
+              style={{
+                marginVertical: 10,
+                width: 290,
+                fontSize: 14,
+                paddingLeft: 5,
+              }}
               placeholder={"Enter your Password"}
-              user={"lock"}
             />
           </View>
-          <View style={{ maxWidth: "80%" }}>
-            <Text style={{ color: "red", fontWeight: "bold" }}>
-              {errorMessage}
-            </Text>
-          </View>
-          {/* Register button */}
 
+          {error && (
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: 50,
+                backgroundColor: "#FAEDED",
+                marginTop: 15,
+                borderWidth: 1,
+                borderColor: "#DC0F00",
+                borderRadius: 5,
+              }}
+            >
+              <Text>{error}</Text>
+            </View>
+          )}
           <View
             style={{
               marginTop: 25,
             }}
           >
-            <Button title="Login" colors={["#FF5F6D", "#FFC371"]} onPress={loginUser}/>
+            <TouchableOpacity
+              onPress={() => onSignInPress()}
+              style={{
+                paddingVertical: 13,
+                paddingHorizontal: 20,
+                borderRadius: 5,
+                backgroundColor: "#6FEEFF",
+                width: 250,
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              <Text
+                style={{
+                  color: "#353535",
+                  textAlign: "center",
+                  fontWeight: 500,
+                }}
+              >
+                title
+              </Text>
+            </TouchableOpacity>
           </View>
 
           {/* Link to Sign In */}

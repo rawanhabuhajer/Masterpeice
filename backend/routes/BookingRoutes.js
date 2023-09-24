@@ -3,7 +3,6 @@ const router = express.Router();
 const Booking = require("../models/BookingModal");
 const bookingController = require("./../controllers/BookingController");
 
-
 // router.get(
 //   "/checkout-session/:serviceId",
 //   bookingController.getCheckoutSession
@@ -21,4 +20,3 @@ router
   .delete(bookingController.deleteBooking);
 
 module.exports = router;
-

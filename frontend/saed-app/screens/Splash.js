@@ -9,11 +9,13 @@ const Splash = () => {
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 3000,
-      useNativeDriver: true,
+      useNativeDriver:true,
     }).start(() => {
-      navigation.navigate('Home'); 
+     
+      navigation.navigate('Register');
     });
-  }, [fadeAnim, navigation]);
+    
+  }, []);
 
   return (
 

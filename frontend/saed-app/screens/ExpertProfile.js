@@ -1,31 +1,69 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Text,
   View,
   ScrollView,
   Pressable,
   Image,
-  StatusBar,
   ImageBackground,
   Dimensions,
-  Platform,
+  ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
-
+import { useNavigation } from "@react-navigation/native";
 import {
   Ionicons,
   MaterialCommunityIcons,
   FontAwesome,
-  Octicons,
   AntDesign,
+  Feather,
 } from "@expo/vector-icons";
-import Button from "../components/Button";
+
+import { useRoute } from "@react-navigation/native";
+import { ExpertsContext } from "../context/ExpertsContext";
+import { useBooksContext } from "../Hooks/UseBookContext";
 
 const ExpertProfile = () => {
-  // const [id, setId] = useState(route.params.id);
-  // const [product, setProduct] = useState();
+  const route = useRoute();
+  const navigation = useNavigation();
+  const [selectedExpert, setSelectedExpert] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [expert, setExpert] = useState();
+  const { expertId } = route.params;
+  const { experts } = useContext(ExpertsContext);
+  const { dispatch } = useBooksContext();
 
-  const { width } = Dimensions.get("window");
-  const height = (width * 80) / 100;
+  useEffect(() => {
+    const foundExpert = experts.find((expert) => expert._id === expertId);
+
+    if (foundExpert) {
+      setSelectedExpert(foundExpert);
+      setExpert(foundExpert);
+    }
+
+    setIsLoading(false);
+  }, [experts, expertId]);
+
+  if (isLoading) {
+    return (
+      <View>
+        <ActivityIndicator size="large" color="#62DFF0" />
+      </View>
+    );
+  }
+
+  if (!selectedExpert) {
+    return (
+      <View>
+        <Text>Expert not found</Text>
+      </View>
+    );
+  }
+  const handleBooking = () => {
+    dispatch({ type: "ADD_BOOK", payload: expert });
+    navigation.navigate("Checkout");
+  };
+
   return (
     <ScrollView
       style={{
@@ -43,23 +81,35 @@ const ExpertProfile = () => {
           <ImageBackground
             source={require("../assets/img/userBg.png")}
             style={{
-              width: 200,
-              height: 200,
+              width: 180,
+              height: 180,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              marginTop: 45,
+              marginTop: 25,
             }}
           >
-            <Image
-              source={require("../assets/img/women.png")}
-              style={{
-                width: 140,
-                height: 140,
-                resizeMode: "contain",
-                borderRadius: 150,
-              }}
-            />
+            {selectedExpert.gender === "Male" ? (
+              <Image
+                source={require("../assets/img/man.png")}
+                style={{
+                  width: 115,
+                  height: 115,
+                  resizeMode: "contain",
+                  borderRadius: 150,
+                }}
+              />
+            ) : (
+              <Image
+                source={require("../assets/img/expert.png")}
+                style={{
+                  width: 150,
+                  height: 150,
+                  resizeMode: "contain",
+                  borderRadius: 150,
+                }}
+              />
+            )}
           </ImageBackground>
         </View>
       </View>
@@ -100,7 +150,17 @@ const ExpertProfile = () => {
               marginTop: 5,
             }}
           >
-            Expert name
+            {selectedExpert.expertname}
+          </Text>
+          <Text
+            style={{
+              textAlign: "center",
+              marginLeft: 15,
+              fontSize: 13,
+              width: "80%",
+            }}
+          >
+            {selectedExpert.about}
           </Text>
         </View>
 
@@ -125,19 +185,82 @@ const ExpertProfile = () => {
             About expert
           </Text>
         </View>
-        <Text
+
+        <View
           style={{
             width: "95%",
-            marginLeft: 15,
-            fontSize: 13,
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "center",
             marginTop: 15,
           }}
         >
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-          accusantium doloremque laudantium eaque ipsa quae ab illo inventore
-          veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-        </Text>
+          <View
+            style={{
+              width: "40%",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: 15,
+              gap: 13,
+              marginLeft: 15,
+            }}
+          >
+            <FontAwesome name="transgender" size={20} color="#39BFEF" />
 
+            <Text>{selectedExpert.gender}</Text>
+          </View>
+          <View
+            style={{
+              width: "40%",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: 15,
+              gap: 10,
+              marginLeft: 12,
+            }}
+          >
+            <Ionicons name="location-outline" size={22} color="#39BFEF" />
+
+            <Text>{selectedExpert.location}</Text>
+          </View>
+          <View
+            style={{
+              width: "40%",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: 15,
+              gap: 10,
+              marginLeft: 15,
+            }}
+          >
+            <Feather name="phone" size={20} color="#39BFEF" />
+            <Text>{selectedExpert.tel}</Text>
+          </View>
+
+          <View
+            style={{
+              width: "40%",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: 15,
+              gap: 10,
+              marginLeft: 15,
+            }}
+          >
+            <MaterialCommunityIcons
+              name="email-outline"
+              size={20}
+              color="#39BFEF"
+            />
+
+            <Text>{selectedExpert.email}</Text>
+          </View>
+        </View>
         <View
           style={{
             display: "flex",
@@ -159,7 +282,7 @@ const ExpertProfile = () => {
               alignItems: "center",
               flexWrap: "wrap",
               borderRadius: 15,
-              gap: 12,
+              gap: 10,
               shadowColor: "gray",
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: 0.3,
@@ -177,8 +300,8 @@ const ExpertProfile = () => {
                 gap: 10,
               }}
             >
-              <AntDesign name="star" size={24} color="#FFDC64" />
-              <Text style={{ fontWeight: 400 }}>4.8</Text>
+              <AntDesign name="star" size={22} color="#FFDC64" />
+              <Text style={{ fontWeight: 400 }}>{selectedExpert.review}</Text>
             </View>
           </Pressable>
 
@@ -210,7 +333,7 @@ const ExpertProfile = () => {
                 gap: 10,
               }}
             >
-              <Text style={{ fontWeight: 400 }}>24</Text>
+              <Text style={{ fontWeight: 400 }}>{selectedExpert.jobs}</Text>
             </View>
           </Pressable>
 
@@ -242,7 +365,9 @@ const ExpertProfile = () => {
                 gap: 10,
               }}
             >
-              <Text style={{ fontWeight: 400 }}>4 years</Text>
+              <Text style={{ fontWeight: 400 }}>
+                {selectedExpert.experience}
+              </Text>
             </View>
           </Pressable>
         </View>
@@ -262,74 +387,54 @@ const ExpertProfile = () => {
           style={{
             display: "flex",
             flexDirection: "row",
-            gap: 35,
+            flexWrap: "wrap",
+            gap: 25,
             alignItems: "center",
             justifyContent: "center",
             marginTop: 25,
           }}
         >
-          <Pressable
-            style={{
-              display: "flex",
-              gap: 10,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Image
-              source={require("../assets/icon/landry-home.png")}
+          {selectedExpert.services.map((service, index) => (
+            <View
+              key={index}
               style={{
-                width: 70,
-                height: 70,
-                resizeMode: "contain",
+                display: "flex",
+                gap: 10,
+                alignItems: "center",
+                justifyContent: "center",
               }}
-            />
-            <Text style={{ fontSize: 12 }}>laundary</Text>
-          </Pressable>
-          <Pressable
-            style={{
-              display: "flex",
-              gap: 10,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Image
-              source={require("../assets/icon/home-deep.png")}
-              style={{
-                width: 70,
-                height: 70,
-                resizeMode: "contain",
-              }}
-            />
-            <Text style={{ fontSize: 12 }}>deep cleaning</Text>
-          </Pressable>
-          <Pressable
-            style={{
-              display: "flex",
-              gap: 10,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Image
-              source={require("../assets/icon/cabins.png")}
-              style={{
-                width: 70,
-                height: 70,
-                resizeMode: "contain",
-              }}
-            />
-            <Text style={{ fontSize: 12 }}>Cabinets</Text>
-          </Pressable>
+            >
+              <Image
+                source={require("../assets/icon/landry-home.png")}
+                style={{
+                  width: 55,
+                  height: 55,
+                  resizeMode: "contain",
+                }}
+              />
+              <Text style={{ fontSize: 10 }}>{service}</Text>
+            </View>
+          ))}
         </View>
-        <View
+        <TouchableOpacity
+          onPress={handleBooking}
           style={{
-            marginTop: 45,
+            paddingVertical: 13,
+            paddingHorizontal: 20,
+            borderRadius: 5,
+            backgroundColor: "#6FEEFF",
+            width: 250,
+            marginLeft: "auto",
+            marginRight: "auto",
+            marginTop: 54,
           }}
         >
-          <Button title={"Book now"} />
-        </View>
+          <Text
+            style={{ color: "#353535", textAlign: "center", fontWeight: 500 }}
+          >
+            Book now
+          </Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

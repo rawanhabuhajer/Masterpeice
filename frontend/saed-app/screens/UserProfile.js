@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   Text,
   View,
@@ -10,16 +10,24 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
-import {
-  Ionicons,
-  MaterialCommunityIcons,
-  FontAwesome,
-  AntDesign,
-} from "@expo/vector-icons";
-import { MaterialIcons } from '@expo/vector-icons';
+
+import { MaterialIcons } from "@expo/vector-icons";
 import Button from "../components/Button";
+import { UserContext } from "../context/AuthContext";
+import { useNavigation } from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native";
 
 const UserProfile = () => {
+  const navigation = useNavigation();
+  const { user, setUser } = useContext(UserContext);
+  const handleLogout = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      })
+    );
+  };
   return (
     <ScrollView
       style={{
@@ -86,17 +94,20 @@ const UserProfile = () => {
               borderBottomWidth: 4,
               width: "20%",
               borderRadius: 15,
-
             }}
           ></View>
-          <Text>User name</Text>
+          <Text>{user.username}</Text>
         </View>
         <View>
-          <Text style={{
-            fontWeight:500,
-            marginLeft: 15,
-            marginTop:25
-          }}>Current booking</Text>
+          <Text
+            style={{
+              fontWeight: 500,
+              marginLeft: 15,
+              marginTop: 25,
+            }}
+          >
+            Current booking
+          </Text>
           <View
             style={{
               width: "85%",
@@ -116,7 +127,7 @@ const UserProfile = () => {
               borderWidth: 1,
               borderColor: "#56E9FF",
               borderRadius: 25,
-              marginTop:25
+              marginTop: 25,
             }}
           >
             <View
@@ -179,53 +190,59 @@ const UserProfile = () => {
             </View>
           </View>
         </View>
-    
-        <Text style={{
-            fontWeight:500,
+
+        <Text
+          style={{
+            fontWeight: 500,
             marginLeft: 15,
-            marginTop:45
-          }}>General setting</Text>
-          <View 
+            marginTop: 45,
+          }}
+        >
+          General setting
+        </Text>
+        <View
           style={{
-            width:"90%",
-            display:"flex",
-            flexDirection:"row",
-            alignItems:"center",
-            justifyContent:"space-between",
-            alignSelf:"center",
-            paddingHorizontal:15,
-            paddingVertical:15,
-            backgroundColor:"#C7F8FF82",
-            borderRadius:5,
-            marginTop:25
-          }}>
-            <Text>Profile settings</Text>
-            <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-          </View>
-          <View 
+            width: "90%",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            alignSelf: "center",
+            paddingHorizontal: 15,
+            paddingVertical: 15,
+            backgroundColor: "#C7F8FF82",
+            borderRadius: 5,
+            marginTop: 25,
+          }}
+        >
+          <Text>Profile settings</Text>
+          <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+        </View>
+        <View
           style={{
-            width:"90%",
-            display:"flex",
-            flexDirection:"row",
-            alignItems:"center",
-            justifyContent:"space-between",
-            alignSelf:"center",
-            paddingHorizontal:15,
-            paddingVertical:15,
-            backgroundColor:"#C7F8FF82",
-            borderRadius:5,
-            marginTop:15
-          }}>
-            <Text>Contact us</Text>
-            <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-          </View>
-      
+            width: "90%",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            alignSelf: "center",
+            paddingHorizontal: 15,
+            paddingVertical: 15,
+            backgroundColor: "#C7F8FF82",
+            borderRadius: 5,
+            marginTop: 15,
+          }}
+        >
+          <Text>Contact us</Text>
+          <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+        </View>
+
         <View
           style={{
             marginTop: 45,
           }}
         >
-          <Button title={"Logout"} />
+          <Button title={"Logout"} onPress={handleLogout} />
         </View>
       </View>
     </ScrollView>

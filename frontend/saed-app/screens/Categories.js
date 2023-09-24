@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Text,
   View,
@@ -9,16 +9,81 @@ import {
   ImageBackground,
   Dimensions,
   Platform,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { SliderBox } from "react-native-image-slider-box";
-import { FontAwesome } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { UserContext } from "../context/AuthContext";
+import { ServicesContext } from "../context/ServicesContext";
 import { useNavigation } from "@react-navigation/native";
+
+import axios from "axios";
+
 const Categories = () => {
   const navigation = useNavigation();
   const [os, setOs] = useState(Platform.OS);
   const [barColor, setBarColor] = useState();
+  const { services, setServices } = useContext(ServicesContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get(
+          "https://vercel-9nlvq4v5v-rawanhabuhajer.vercel.app/api/services/"
+        );
+        if (response.status === 200) {
+          const ServicesData = response.data.data.services;
+          setServices(ServicesData);
+          setIsLoading(false);
+        } else {
+          setError("Unexpected response status: " + response.status);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        if (error.response) {
+          const errorMessage = error.response.data.error;
+          setError(errorMessage);
+          setIsLoading(false);
+        } else if (error.request) {
+          setError("Network request failed");
+          setIsLoading(false);
+        } else {
+          setError("Unexpected error: " + error.message);
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchServices();
+
+  }, []);
+
+  if (isLoading) {
+    return (
+      <>
+        <View style={[styles.container, styles.horizontal]}>
+          <ActivityIndicator size="large" color="#62DFF0" />
+        </View>
+      </>
+    );
+  }
+  const homeServices = services.filter(
+    (service) => service.category === "home services"
+  );
+  const officeServices = services.filter(
+    (service) => service.category === "office services"
+  );
+  const vehicleServices = services.filter(
+    (service) => service.category === "vehicle services"
+  );
+  const otherServices = services.filter(
+    (service) => service.category === "other services"
+  );
+
+
 
   return (
     <>
@@ -40,13 +105,19 @@ const Categories = () => {
         >
           <MaterialIcons name="keyboard-arrow-left" size={24} color="black" />
           <Text style={{ fontWeight: 500 }}>Services category</Text>
+          <TouchableOpacity
+           onPress={() => navigation.navigate("History")}
+        
+          >
           <Image
-            source={require("../assets/icon/schedule.png")}
+             source={require("../assets/icon/schedule.png")}
             style={{
               width: 25,
               height: 25,
             }}
           />
+          </TouchableOpacity>
+          
         </View>
 
         <Text style={{ fontWeight: 500, marginLeft: 15, marginTop: 20 }}>
@@ -58,94 +129,31 @@ const Categories = () => {
             flexDirection: "row",
             flexWrap: "wrap",
             justifyContent: "center",
-            gap: 30,
+            gap: 35,
             marginTop: 25,
           }}
         >
-          <Pressable
-            onPress={() => navigation.navigate("ServiceInfo")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/home-deep.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Deep cleaning</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/furnature.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Furniture</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/landry-home.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Laundary</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/pool.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Pools</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/cabines-home.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Cabines</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/gardens.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Gardens</Text>
-          </Pressable>
+          {homeServices.map((service) => (
+            <Pressable
+              key={service._id}
+              onPress={() =>
+                navigation.navigate("ServiceInfo", { serviceId: service._id })
+              }
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              <Image
+                 source={{ uri: service.imageCover }}
+                  style={{ width: 70, height: 70 }}
+              />
+
+           
+              <Text>{service.servicename}</Text>
+            </Pressable>
+          ))}
         </View>
         <Text style={{ fontWeight: 500, marginLeft: 15, marginTop: 35 }}>
           Office services
@@ -156,70 +164,33 @@ const Categories = () => {
             display: "flex",
             flexDirection: "row",
             flexWrap: "wrap",
-            gap: 30,
-            marginTop: 25,
             marginLeft: 40,
+            gap: 35,
+            marginTop: 25,
           }}
         >
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
+          {officeServices.map((service) => (
+            <Pressable
+            key={service._id}
+            onPress={() =>
+              navigation.navigate("ServiceInfo", { serviceId: service._id })
+            }
             style={{
               display: "flex",
               alignItems: "center",
               gap: 10,
             }}
           >
-            <Image
-              source={require("../assets/icon/office-deep.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Deep cleaning</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/office-furnature.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Furniture</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/window.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Windows</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/cabines-home.png")}
-              style={{ width: 70, height: 70, marginLeft: 10 }}
-            />
-            <Text>Cabines</Text>
-          </Pressable>
+             <Image
+                 source={{ uri: service.imageCover }}
+                  style={{ width: 70, height: 70 }}
+              />
+              <Text>{service.servicename}</Text>
+            </Pressable>
+          ))}
         </View>
         <Text style={{ fontWeight: 500, marginLeft: 15, marginTop: 35 }}>
-          Vhihcle services
+          vehicle services
         </Text>
 
         <View
@@ -228,52 +199,29 @@ const Categories = () => {
             flexDirection: "row",
             flexWrap: "wrap",
             justifyContent: "center",
-            gap: 30,
+            gap: 35,
             marginTop: 25,
           }}
         >
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/car-deep.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Deep cleaning</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/car-f.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Furniture</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/esay.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Easy clean</Text>
-          </Pressable>
+          {vehicleServices.map((service) => (
+             <Pressable
+             key={service._id}
+             onPress={() =>
+               navigation.navigate("ServiceInfo", { serviceId: service._id })
+             }
+             style={{
+               display: "flex",
+               alignItems: "center",
+               gap: 10,
+             }}
+           >
+              <Image
+            source={{ uri: service.imageCover }}
+             style={{ width: 70, height: 70 }}
+         />
+              <Text>{service.servicename}</Text>
+            </Pressable>
+          ))}
         </View>
         <Text style={{ fontWeight: 500, marginLeft: 15, marginTop: 35 }}>
           Other services
@@ -285,58 +233,52 @@ const Categories = () => {
             flexDirection: "row",
             flexWrap: "wrap",
             justifyContent: "center",
-            gap: 30,
+            gap: 35,
             marginTop: 25,
-            marginLeft: 15,
             marginBottom: 45,
           }}
         >
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
+          {otherServices.map((service) => (
+            <Pressable
+            key={service._id}
+            onPress={() =>
+              navigation.navigate("ServiceInfo", { serviceId: service._id })
+            }
             style={{
               display: "flex",
               alignItems: "center",
               gap: 10,
             }}
           >
-            <Image
-              source={require("../assets/icon/farms.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Farms</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/pestt.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>Pets control</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Worker")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icon/after.png")}
-              style={{ width: 70, height: 70 }}
-            />
-            <Text>After building</Text>
-          </Pressable>
+              <Image
+                 source={{ uri: service.imageCover }}
+                  style={{ width: 70, height: 70 }}
+              />
+              <Text>{service.servicename}</Text>
+            </Pressable>
+          ))}
         </View>
       </ScrollView>
     </>
   );
 };
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  pressable: {
+    width: 140,
+    height: 150,
+    borderWidth: 2,
+    borderColor: "#56E9FF",
+    borderRadius: 15,
+    marginTop: 45,
+    display: "flex",
+    alignItems: "center",
+    gap: 5,
+    justifyContent: "center",
+  },
+});
 export default Categories;

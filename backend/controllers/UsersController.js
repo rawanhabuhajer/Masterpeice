@@ -1,8 +1,7 @@
 const User = require("./../models/userModel");
 const bcrypt = require("bcrypt");
-const catchAsync = require("../utilies/CatchAysnc");
-const AppError = require("../utilies/AppError");
-
+const catchAsync = require("../utils/CatchAysnc");
+const AppError = require("../utils/AppError");
 
 exports.getAllUsers = async (req, res, next) => {
   const users = await User.find();

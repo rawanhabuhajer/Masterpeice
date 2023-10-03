@@ -31,13 +31,13 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={!user ? <SignUp /> : <Navigate to="/home" />}
+            element={ <SignUp />}
           ></Route>
-          <Route path="/login"   element={!user ? <SignIn /> : <Navigate to="/home" />}></Route>
+          <Route path="/login"   element={ <SignIn /> }></Route>
 
           <Route
             path="/home"
-            element={user ? <Home /> : <Navigate to="/" />}
+            element={ <Home /> }
           ></Route>
           <Route
             path="/schedule"
@@ -53,7 +53,7 @@ function App() {
           ></Route>
           <Route
             path="/user-profile"
-            element={user ? <UserProfile /> : <Navigate to="/" />}
+            element={ <UserProfile /> }
           ></Route>
           <Route
             path="/experts"
@@ -65,7 +65,7 @@ function App() {
           ></Route>
           <Route
             path="/edit-user"
-            element={user ? <Profile /> : <Navigate to="/" />}
+            element={<Profile /> }
           ></Route>
           <Route
             path="/create-service"

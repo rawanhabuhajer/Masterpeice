@@ -1,4 +1,4 @@
-import React, { useState, useEffect , useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Text,
   View,
@@ -8,22 +8,44 @@ import {
   ImageBackground,
   Dimensions,
   ActivityIndicator,
-  StyleSheet
+  StyleSheet,
 } from "react-native";
-import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons , AntDesign , MaterialIcons} from "@expo/vector-icons";
 import { SliderBox } from "react-native-image-slider-box";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useBooksContext } from "../Hooks/UseBookContext";
-import { FontAwesome } from "@expo/vector-icons";
 import { UserContext } from "../context/AuthContext";
+import axios from "axios";
+import { ExpertsContext } from "../context/ExpertsContext";
 
 const Home = () => {
   const { dispatch } = useBooksContext();
   const { user, setUser } = useContext(UserContext);
-
   const [data, setData] = useState(null);
-  const images = [
+  const [currentImages, setCurrentImages] = useState(newImages);
+  const { experts, setExperts } = useContext(ExpertsContext);
+
+  const topExperts = experts
+  .slice() 
+  .sort((a, b) => b.review - a.review) 
+  .slice(0, 5);
+  const newImages = [
+    require("../assets/img/girl2.png"),
+    require("../assets/img/lundry.png"),
+    require("../assets/img/farm.png"),
+  ];
+  const popularImages = [
+    require("../assets/icon/book-placed.png"),
+    require("../assets/img/lundry.png"),
+    require("../assets/img/farm.png"),
+  ];
+  const trendingImages = [
+    require("../assets/img/girl2.png"),
+    require("../assets/img/lundry.png"),
+    require("../assets/img/farm.png"),
+  ];
+  const saleImages = [
     require("../assets/img/girl2.png"),
     require("../assets/img/lundry.png"),
     require("../assets/img/farm.png"),
@@ -37,8 +59,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const storedData = await AsyncStorage.getItem("user");
-        console.log("Stored Data:", storedData);
-        dispatch({type : "ADD_BOOK" , payload : user });
+        dispatch({ type: "ADD_BOOK", payload: user });
         setIsLoading(false);
         if (storedData !== null) {
           setIsLoading(false);
@@ -54,6 +75,10 @@ const Home = () => {
       }
     };
 
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     const fetchExperts = async () => {
       try {
         const response = await axios.get(
@@ -61,34 +86,25 @@ const Home = () => {
         );
         if (response.status === 200) {
           const ExpertsData = response.data.data.experts;
- 
+
           setExperts(ExpertsData);
-         
 
           setIsLoading(false);
         } else {
-          setError("Unexpected response status: " + response.status);
           setIsLoading(false);
         }
       } catch (error) {
         if (error.response) {
-          const errorMessage = error.response.data.error;
-          setError(errorMessage);
           setIsLoading(false);
         } else if (error.request) {
-          setError("Network request failed");
           setIsLoading(false);
         } else {
-          setError("Unexpected error: " + error.message);
           setIsLoading(false);
         }
       }
     };
-    console.log("hello",experts);
 
     fetchExperts();
-    fetchData();
-
   }, []);
 
   if (isLoading) {
@@ -103,7 +119,6 @@ const Home = () => {
 
   return (
     <>
-
       <ScrollView style={{ backgroundColor: "#fff" }}>
         <ImageBackground
           style={{ width, height, resizeMode: "contain", borderRadius: 25 }}
@@ -112,39 +127,28 @@ const Home = () => {
           <View
             style={{
               display: "flex",
-              alignItems: "center",
-              marginTop: 15,
+              alignItems:"flex-end",
+              marginTop:35,
+              marginRight:20
             }}
           >
-            <View
-              style={{
-                width: 130,
-                height: 30,
-                borderRadius: 8,
-                backgroundColor: "white",
-                shadowColor: "black",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.3,
-                shadowRadius: 4,
-                elevation: 4,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 5,
-                paddingLeft: 6,
-              }}
-            >
-              <Ionicons name="ios-location-sharp" size={16} color="#00D0EC" />
-              <Text style={{ fontSize: 11 }}>Amman - 4th circle</Text>
-            </View>
-          </View>
+        
+          <Image
+            source={require("../assets/icon/schedule.png")}
+            style={{
+              width: 25,
+              height: 25,
+            }}
+          />
+        </View>
+        
           <View
             style={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-              marginTop: 35,
+              marginTop: 25,
               marginLeft: 25,
               width: "80%",
             }}
@@ -239,6 +243,7 @@ const Home = () => {
               backgroundColor: "#D0F9FF",
               borderRadius: 10,
             }}
+            onPress={() => setCurrentImages(newImages)}
           >
             <Text>New</Text>
           </Pressable>
@@ -253,6 +258,7 @@ const Home = () => {
               backgroundColor: "#D0F9FF",
               borderRadius: 10,
             }}
+            onPress={() => setCurrentImages(popularImages)}
           >
             <Text>Popular</Text>
           </Pressable>
@@ -267,6 +273,7 @@ const Home = () => {
               backgroundColor: "#D0F9FF",
               borderRadius: 10,
             }}
+            onPress={() => setCurrentImages(trendingImages)}
           >
             <Text>Trending</Text>
           </Pressable>
@@ -278,9 +285,10 @@ const Home = () => {
               alignItems: "center",
               paddingVertical: 5,
               paddingHorizontal: 15,
-              backgroundColor: "#82EFFF",
+              backgroundColor: "#D0F9FF",
               borderRadius: 10,
             }}
+            onPress={() => setCurrentImages(saleImages)}
           >
             <Text>Sale</Text>
           </Pressable>
@@ -290,17 +298,19 @@ const Home = () => {
             backgroundColor: "#fff",
           }}
         >
-          <SliderBox
-            images={images}
-            autoPlay
-            circleLoop
-            dotColor={"#13274F"}
-            inactiveDotColor="#393E46"
-            ImageComponentStyle={{
-              width: "92%",
-              borderRadius: 15,
-            }}
-          />
+          {currentImages && currentImages.length > 0 && (
+            <SliderBox
+              images={currentImages}
+              autoPlay
+              circleLoop
+              dotColor={"#13274F"}
+              inactiveDotColor="#393E46"
+              ImageComponentStyle={{
+                width: "92%",
+                borderRadius: 15,
+              }}
+            />
+          )}
         </View>
         <View
           style={{
@@ -332,7 +342,7 @@ const Home = () => {
           <Pressable
             onPress={() => navigation.navigate("Categories")}
             style={{
-              width: 110,
+              width: 135,
               height: 110,
               backgroundColor: "#F2FDFF",
               display: "flex",
@@ -350,7 +360,7 @@ const Home = () => {
             <Image
               style={{
                 width: "30%",
-                height: "30%",
+                height: "38%",
               }}
               source={require("../assets/icon/home.png")}
             />
@@ -359,7 +369,7 @@ const Home = () => {
           <Pressable
             onPress={() => navigation.navigate("Categories")}
             style={{
-              width: 110,
+              width: 135,
               height: 110,
               backgroundColor: "#EDFFF3",
               display: "flex",
@@ -377,7 +387,7 @@ const Home = () => {
             <Image
               style={{
                 width: "30%",
-                height: "30%",
+                height: "38%",
               }}
               source={require("../assets/icon/office.png")}
             />
@@ -388,7 +398,7 @@ const Home = () => {
           <Pressable
             onPress={() => navigation.navigate("Categories")}
             style={{
-              width: 110,
+              width: 135,
               height: 110,
               backgroundColor: "#FFF5ED",
               display: "flex",
@@ -406,7 +416,7 @@ const Home = () => {
             <Image
               style={{
                 width: "30%",
-                height: "30%",
+                height: "38%",
               }}
               source={require("../assets/icon/car.png")}
             />
@@ -415,7 +425,7 @@ const Home = () => {
           <Pressable
             onPress={() => navigation.navigate("Categories")}
             style={{
-              width: 110,
+              width: 135,
               height: 110,
               backgroundColor: "#F1F0FF",
               display: "flex",
@@ -432,8 +442,8 @@ const Home = () => {
           >
             <Image
               style={{
-                width: "30%",
-                height: "30%",
+                width: "31%",
+                height: "38%",
               }}
               source={require("../assets/icon/pest.png")}
             />
@@ -468,161 +478,72 @@ const Home = () => {
               marginLeft: 15,
               marginTop: 25,
               gap: 20,
-              marginBottom:35
+              marginBottom: 35,
             }}
           >
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Image
+            {topExperts.map((expert,index) => (
+              <View
+              key={index}
                 style={{
-                  width: 70,
-                  height: 70,
-                  resizeMode: "contain",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
-                source={require("../assets/img/women.png")}
-              ></Image>
-              <Text>name</Text>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                style={{
-                  width: 70,
-                  height: 70,
-                  resizeMode: "contain",
-                }}
-                source={require("../assets/img/man.png")}
-              ></Image>
-              <Text>name</Text>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                style={{
-                  width: 70,
-                  height: 70,
-                  resizeMode: "contain",
-                }}
-                source={require("../assets/img/man.png")}
-              ></Image>
-              <Text>name</Text>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                style={{
-                  width: 70,
-                  height: 70,
-                  resizeMode: "contain",
-                }}
-                source={require("../assets/img/women.png")}
-              ></Image>
-              <Text>name</Text>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                style={{
-                  width: 70,
-                  height: 70,
-                  resizeMode: "contain",
-                }}
-                source={require("../assets/img/women.png")}
-              ></Image>
-              <Text>name</Text>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                style={{
-                  width: 70,
-                  height: 70,
-                  resizeMode: "contain",
-                }}
-                source={require("../assets/img/man.png")}
-              ></Image>
-              <Text>name</Text>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                style={{
-                  width: 70,
-                  height: 70,
-                  resizeMode: "contain",
-                }}
-                source={require("../assets/img/women.png")}
-              ></Image>
-              <Text>name</Text>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                style={{
-                  width: 70,
-                  height: 70,
-                  resizeMode: "contain",
-                }}
-                source={require("../assets/img/man.png")}
-              ></Image>
-              <Text>name</Text>
-            </View>
+              >
+                {expert.gender === "Female" ? (
+                  <Image
+                    source={require("../assets/img/expert.png")}
+                    style={{
+                      width: 80,
+                      height: 80,
+               
+                    }}
+                  />
+                ) : (
+                  <Image
+                    source={require("../assets/img/man-expert.png")}
+                    style={{
+                      width: 80,
+                      height: 80,
+                    
+                    }}
+                  />
+                )}
+
+                <Text  style={{
+                    marginTop: 5,
+                    fontWeight: 400,
+                  }}>{expert.expertname}</Text>
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    gap: 7,
+                    marginTop:7
+                  }}
+                >
+                  <AntDesign name="star" size={20} color="#FFDC64" />
+
+                  <Text>{expert.review}</Text>
+                </View>
+              </View>
+            ))}
           </Pressable>
         </ScrollView>
-      
       </ScrollView>
     </>
-
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     padding: 10,
   },
 });

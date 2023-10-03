@@ -12,7 +12,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { Entypo } from "@expo/vector-icons";
- import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../context/AuthContext";
 
 const Login = () => {
@@ -38,8 +38,7 @@ const Login = () => {
 
         await AsyncStorage.setItem("user", JSON.stringify(userData));
         const user = response.data;
-        console.log(user);
-        setUser(user)
+        setUser(user);
         navigation.navigate("Main");
       } else {
         setError("Unexpected response status: " + response.status);
@@ -72,44 +71,49 @@ const Login = () => {
       {/* Main content */}
       <View
         style={{
-          flex: 1,
           backgroundColor: "white",
-          alignItems: "center",
-          justifyContent: "flex-start",
+          flex: 1,
         }}
       >
         <View
           style={{
-            marginBottom: 30,
-            display: "flex",
+            marginBottom: 20,
+            marginTop: 40,
             alignItems: "center",
-            justifyContent: "center",
-            marginTop: 50,
           }}
         >
           <Image
-            style={{ width: 60, height: 70 }}
+            style={{ width: 40, height: 50 }}
             source={require("../assets/icon/logo.png")}
           />
           <Image
-            style={{ width: 80, height: 18, marginTop: 15 }}
+            style={{ width: 60, height: 13, marginTop: 15 }}
             source={require("../assets/icon/Saed.png")}
           />
         </View>
 
-        {/* Form for registration */}
         <KeyboardAvoidingView>
-          <View style={{ alignItems: "center" }}>
-            {/* Title */}
+          <View style={{}}>
+            <Text
+              style={{
+                fontSize: 24,
+                color: "#041E42",
+                fontWeight: 500,
+                marginLeft: 15,
+              }}
+            >
+              Login
+            </Text>
             <Text
               style={{
                 fontSize: 14,
-                fontWeight: 500,
-                marginTop: 12,
+                marginTop: 10,
                 color: "#041E42",
+                marginLeft: 15,
+                marginBottom: 20,
               }}
             >
-              welcome back!
+              Hello there! We're delighted to see you again.
             </Text>
           </View>
 
@@ -122,6 +126,8 @@ const Login = () => {
               paddingVertical: 5,
               borderRadius: 5,
               marginTop: 20,
+              width: "92%",
+              alignSelf: "center",
             }}
           >
             <Entypo
@@ -134,6 +140,7 @@ const Login = () => {
             />
 
             <TextInput
+            
               value={email}
               onChangeText={(text) => setEmail(text)}
               style={{
@@ -154,10 +161,12 @@ const Login = () => {
               paddingVertical: 5,
               borderRadius: 5,
               marginTop: 20,
+              width: "92%",
+              alignSelf: "center",
             }}
           >
             <Entypo
-              name="user"
+              name="lock"
               size={20}
               color="#CBC7C7"
               style={{
@@ -166,6 +175,7 @@ const Login = () => {
             />
 
             <TextInput
+            secureTextEntry={true}
               value={password}
               onChangeText={(text) => setPassword(text)}
               style={{
@@ -197,7 +207,7 @@ const Login = () => {
           )}
           <View
             style={{
-              marginTop: 25,
+              marginTop: 45,
             }}
           >
             <TouchableOpacity
@@ -219,7 +229,7 @@ const Login = () => {
                   fontWeight: 500,
                 }}
               >
-                title
+                sign in
               </Text>
             </TouchableOpacity>
           </View>
@@ -248,7 +258,8 @@ const Login = () => {
               >
                 If you don’t have an account register
               </Text>
-              <View
+              <Pressable
+                onPress={() => navigation.navigate("Register")}
                 style={{
                   marginTop: 5,
                   display: "flex",
@@ -260,7 +271,7 @@ const Login = () => {
                 <Text
                   style={{ textAlign: "center", color: "gray", fontSize: 14 }}
                 >
-                  You can{" "}
+                  You can
                 </Text>
                 <Text
                   style={{
@@ -271,7 +282,7 @@ const Login = () => {
                 >
                   Register here !
                 </Text>
-              </View>
+              </Pressable>
             </View>
           </Pressable>
         </KeyboardAvoidingView>

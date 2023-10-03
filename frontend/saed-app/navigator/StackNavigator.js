@@ -18,6 +18,7 @@ import History from "../screens/History";
 import { AntDesign, Ionicons, Entypo } from "@expo/vector-icons";
 import ServiceInfo from "../screens/ServiceInfo";
 import { UserContext } from "../context/AuthContext";
+import EditProfile from "../screens/EditProfile";
 
 const StackNavigator = () => {
   const { user, setUser } = useContext(UserContext);
@@ -110,92 +111,99 @@ const StackNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator>
       <Stack.Screen
-          name="Home"
-          component={Home}
+          name="Login"
+          component={Login}
           options={{ headerShown: false }}
         />
       <Stack.Screen
-            name="Register"
-            component={Register}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{ headerShown: false }}
-          />
-      <Stack.Screen
-            name="History"
-            component={History}
-            options={{ headerShown: false }}
-          />
-      
-         
-
-         <Stack.Screen
-          name="Main"
-          component={BottomTabs}
-          options={{ headerShown: false }}
-        />
-  
-
-      <Stack.Screen
-          name="Categories"
-          component={Categories}
+          name="EditProfile"
+          component={EditProfile}
           options={{ headerShown: false }}
         />
       <Stack.Screen
-          name="Worker"
-          component={Worker}
+          name="UserProfile"
+          component={UserProfile}
           options={{ headerShown: false }}
         />
       <Stack.Screen
-          name="ExpertProfile"
-          component={ExpertProfile}
-          options={{ headerShown: false }}
-        />
- 
-      <Stack.Screen
-          name="Checkout"
-          component={Checkout}
-          options={{ headerShown: false }}
-        />
-
-      <Stack.Screen
-          name="ServiceInfo"
-          component={ServiceInfo}
-          options={{ headerShown: false }}
-        />
-   
-      <Stack.Screen
-          name="BookService"
-          component={BookService}
-          options={{ headerShown: false }}
-        />
- 
-        <Stack.Screen
           name="Splash"
           component={Splash}
           options={{ headerShown: false }}
         />
 
-   
-  
-
-        <Stack.Screen
+    
+      <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+      <Stack.Screen
           name="Confirmed"
           component={Confirmed}
           options={{ headerShown: false }}
         />
-      
+
+      <Stack.Screen
+          name="Checkout"
+          component={Checkout}
+          options={{ headerShown: false }}
+        />
+  
+     
+  
+      <Stack.Screen
+          name="Worker"
+          component={Worker}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={Register}
+          options={{ headerShown: false }}
+        />
+    
 
         <Stack.Screen
-          name="UserProfile"
-          component={UserProfile}
+          name="Main"
+          component={BottomTabs}
           options={{ headerShown: false }}
         />
 
-    
+ 
+
+        <Stack.Screen
+          name="History"
+          component={History}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Categories"
+          component={Categories}
+          options={{ headerShown: false }}
+        />
+   
+        <Stack.Screen
+          name="ExpertProfile"
+          component={ExpertProfile}
+          options={{ headerShown: false }}
+        />
+
+   
+
+        <Stack.Screen
+          name="ServiceInfo"
+          component={ServiceInfo}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="BookService"
+          component={BookService}
+          options={{ headerShown: false }}
+        />
+
+      
       </Stack.Navigator>
     </NavigationContainer>
     /* </UserProvider> */

@@ -26,8 +26,10 @@ const Worker = () => {
   const [selected, setSelcted] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const {experts , setExperts} = useContext(ExpertsContext)
-  
+  const { experts, setExperts } = useContext(ExpertsContext);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredExperts, setFilteredExperts] = useState(experts);
+
   useEffect(() => {
     const fetchExperts = async () => {
       try {
@@ -38,7 +40,6 @@ const Worker = () => {
           const ExpertsData = response.data.data.experts;
           // console.log(ExpertsData)
           setExperts(ExpertsData);
-         
 
           setIsLoading(false);
         } else {
@@ -59,9 +60,21 @@ const Worker = () => {
         }
       }
     };
-    console.log("hello",experts);
+    console.log("hellokkk", experts);
     fetchExperts();
+
+    
   }, []);
+
+// search filter
+  const handleSearch = (text) => {
+    setSearchTerm(text);
+
+    const filtered = experts.filter((expert) =>
+      expert.expertname.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredExperts(filtered);
+  };
 
   if (isLoading) {
     return (
@@ -127,7 +140,11 @@ const Worker = () => {
               marginTop: 10,
             }}
           >
-            <TextInput placeholder="Find expert by his name" />
+            <TextInput
+              onChangeText={handleSearch}
+              value={searchTerm}
+              placeholder="Find expert by his name"
+            />
             <Image
               source={require("../assets/icon/search.png")}
               style={{
@@ -146,12 +163,12 @@ const Worker = () => {
             justifyContent: "center",
             gap: 30,
             marginTop: 25,
+            marginBottom: 45,
           }}
         >
-          {experts.map((expert) => (
+          {filteredExperts.map((expert) => (
             <View key={expert._id}>
               <Pressable
-               
                 style={[
                   styles.pressable,
                   {
@@ -203,7 +220,13 @@ const Worker = () => {
 
                   <Text>{expert.review}</Text>
                 </View>
-                <Pressable onPress={() => navigation.navigate("ExpertProfile" , {expertId : expert._id})}>
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate("ExpertProfile", {
+                      expertId: expert._id,
+                    })
+                  }
+                >
                   <View
                     style={{
                       display: "flex",
@@ -231,8 +254,6 @@ const Worker = () => {
               </Pressable>
             </View>
           ))}
-          <View style={{ marginTop: 45 }}></View>
-          <Button title={"Confirm"} />
         </View>
       </ScrollView>
     </>

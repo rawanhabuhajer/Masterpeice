@@ -17,7 +17,7 @@ import { useBooksContext } from "../Hooks/UseBookContext";
 import { useNavigation } from "@react-navigation/native";
 
 const BookService = () => {
-  const [value, setValue] = useState("");
+  const [location, setLocation] = useState();
   const [duration, setDuration] = useState(0);
   const [date, setDate] = useState("");
   const [selectedPeriod, setSelectedPeriod] = useState();
@@ -28,7 +28,7 @@ const BookService = () => {
 
   const handleBooking = () =>{
     const time = (selectedTime + " " + selectedPeriod);
-    dispatch({type : "ADD_BOOK" , payload : {value , date ,selectedPeriod,selectedTime,duration , time}});
+    dispatch({type : "ADD_BOOK" , payload : { location , date ,selectedPeriod,selectedTime,duration , time}});
 
     navigation.navigate('Worker')
   }
@@ -232,8 +232,8 @@ const BookService = () => {
           Adress
         </Text>
         <TextInput
-          onChangeText={(text) => setValue(text)}
-          value={value}
+          onChangeText={(text) => setLocation(text)}
+          value={location}
           placeholder="Write your address"
           style={{
             borderWidth: 1,
@@ -258,7 +258,7 @@ const BookService = () => {
         >
           ex : Amman-shafa badran
         </Text>
-        <Button title={"Book now"} onPress={handleBooking} />
+        <Button title={"Next"} onPress={handleBooking} />
         <View style={{ marginBottom: 35 }}></View>
       </ScrollView>
     </>

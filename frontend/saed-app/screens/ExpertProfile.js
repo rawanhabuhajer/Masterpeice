@@ -432,7 +432,7 @@ const ExpertProfile = () => {
           <Text
             style={{ color: "#353535", textAlign: "center", fontWeight: 500 }}
           >
-            Book now
+            Checkout
           </Text>
         </TouchableOpacity>
       </View>

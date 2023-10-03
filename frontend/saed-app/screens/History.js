@@ -23,7 +23,7 @@ const History = () => {
     const fetchServices = async () => {
       try {
         const response = await axios.get(
-          'https://vercel-9nlvq4v5v-rawanhabuhajer.vercel.app/api/book'
+          'https://vercel-9nlvq4v5v-rawanhabuhajer.vercel.app/api/book/userbookings'
         );
         if (response.status === 200) {
           const bookingData = response.data.data.bookings;
@@ -49,6 +49,7 @@ const History = () => {
     };
 
     fetchServices();
+
   }, []);
 
   if (isLoading) {
@@ -147,7 +148,7 @@ const History = () => {
                       }}
                     >
                       <Text>Date :</Text>
-                      <Text>{booking.date}</Text>
+                      <Text>{new Date(booking.date).toLocaleDateString()}</Text>
                     </View>
                     <View
                       style={{

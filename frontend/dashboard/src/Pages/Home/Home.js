@@ -27,7 +27,7 @@ const Home = () => {
   }, []);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <div className="loader"></div>;
   }
 
 
@@ -73,19 +73,21 @@ const Home = () => {
           </div>
           <div className="service__list">
             <div className="service__list__title">
+              <div>Service Id</div>
               <div>Category</div>
               <div>service Name</div>
+              <div>service summary</div>
               <div>Price</div>
-              <div>Service Id</div>
               <div>Control</div>
             </div>
             <div className="service__data__container">
               {serviceData.map((service) => (
                 <div className="service__data" key={service._id}>
+                  <div>{service._id.substring(0, 10)}</div>
                   <div>{service.category}</div>
                   <div>{service.servicename}</div>
+                  <div>{service.summary}</div>
                   <div>${service.servicePrice}</div>
-                  <div>{service._id}</div>
           
 
                   <div className="service__icon__container">

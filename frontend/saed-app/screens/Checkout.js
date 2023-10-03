@@ -30,6 +30,7 @@ const Checkout = () => {
   const time = books[1].time;
   const date = books[1].date;
   const duration = books[1].duration;
+  const location = books[1].location;
   const expert = books[0]._id;
   const paid = true;
   const fetchPost = async () => {
@@ -38,6 +39,7 @@ const Checkout = () => {
             const response = await axios.post(
           "https://vercel-9nlvq4v5v-rawanhabuhajer.vercel.app/api/book",
           {
+            location,
             user,
             service,
             time,
@@ -45,6 +47,7 @@ const Checkout = () => {
             duration,
             expert,
             paid,
+            
           }
         );
 
@@ -53,6 +56,7 @@ const Checkout = () => {
           setBook(book);
           dispatch({ type: "ADD_BOOK", payload: book });
           navigation.navigate("Confirmed");
+          
         } else {
           setError("Unexpected response status: " + response.status);
         }
@@ -181,6 +185,8 @@ const Checkout = () => {
               paddingLeft: 5,
             }}
             placeholder="Card number"
+            keyboardType="numeric"
+
           />
         </View>
         <View
@@ -246,6 +252,7 @@ const Checkout = () => {
                 paddingLeft: 15,
               }}
               placeholder="MM/YY"
+              keyboardType="numeric"
             />
           </View>
 
@@ -272,6 +279,7 @@ const Checkout = () => {
                 paddingLeft: 15,
               }}
               placeholder="CVC"
+              keyboardType="numeric"
             />
           </View>
         </View>

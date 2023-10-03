@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
-
+import "./SignUp.css";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -11,8 +10,6 @@ const SignUp = () => {
   const [error, setError] = useState("");
   const [role, setRole] = useState("");
   const [secretKey, setSecretKey] = useState("");
-
-
 
   const Username = (e) => {
     e.preventDefault();
@@ -34,7 +31,7 @@ const SignUp = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (role === "admin" && secretKey !== "admin") {
-     setError('You are not an Admin')
+      setError("You are not an Admin");
     } else if (role === "superAdmin" && secretKey !== "superadmin") {
       setError("You are not a superAdmin");
     } else {
@@ -55,11 +52,9 @@ const SignUp = () => {
       setError(data.error);
 
       if (res.ok) {
+        localStorage.setItem("user", JSON.stringify(data));
 
-         localStorage.setItem("user", JSON.stringify(data));
-        
-        
-       setError(null);
+        setError(null);
       } else if (!res.ok) {
         setError(data.error);
       }
@@ -68,9 +63,9 @@ const SignUp = () => {
 
   return (
     <>
-      <div className="signin__container">
+      <div className="signup__container">
         <form onSubmit={submitHandler}>
-          <div className="signin">Sign up</div>
+          <div className="signup">Sign up</div>
           <label>Username</label>
           <input
             type="text"
@@ -99,39 +94,51 @@ const SignUp = () => {
             value={confirmPassword}
             onChange={ConfirmPassword}
           />
-        <div>
-          <input
-            type="radio"
-            name="role"
-            id="admin"
-            value="admin"
-            onChange={(e) => setRole(e.target.value)}
+          <div>
+          <label htmlFor="admin" style={{ fontSize: '12px' }}>
+            <input
+              type="radio"
+              name="role"
+              id="admin"
+              value="admin"
+              onChange={(e) => setRole(e.target.value)}
+          
             />
-            Admin
-          <input
-            type="radio"
-            name="role"
-            id="superAdmin"
-            value="superAdmin"
-            onChange={(e) => setRole(e.target.value)}
+            {'\u0020'} Admin
+            </label>
+            <label htmlFor="superadmin" style={{ fontSize: '12px'}}>
+            <input
+              type="radio"
+              name="role"
+              id="superAdmin"
+              value="superAdmin"
+              onChange={(e) => setRole(e.target.value)}
+              style={{ marginLeft: "15px"}}
             />
-            SuperAdmin
+              {'\u0020'}SuperAdmin
+            </label>
           </div>
           {role === "admin" || role === "superAdmin" ? (
             <div>
-              <label>secretKey</label>
+              <label>Secret Key</label>
               <input
                 type="text"
                 placeholder="secret key"
                 value={secretKey}
                 onChange={(e) => setSecretKey(e.target.value)}
-                />
+                style={{ marginLeft: "15px", height: "35px" }}
+              />
             </div>
           ) : null}
           {error && <div className="error-message">{error}</div>}
-          <button>sign up</button>
+          <button><Link to={"/"}> sign up</Link></button>
         </form>
-          <Link to={'/login'}>sign in</Link>
+        <div style={{fontSize:"12px" ,marginLeft:"10px" , marginTop:"10px"}}>
+        If you already have an account register<br /> you can
+        <Link to={"/login"} style={{color:"#62DFF0", textDecoration: "none"}}>
+        {'\u0020'} Login here !
+        </Link>
+        </div>
       </div>
     </>
   );

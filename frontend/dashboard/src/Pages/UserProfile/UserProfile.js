@@ -25,38 +25,38 @@ const UserProfile = () => {
     console.log(id);
   }, []);
 
-  // const updateInfo = (e) => {
-  //   e.preventDefault();
+  const updateInfo = (e) => {
+    e.preventDefault();
   
-  //   const updatedUser = {
-  //     username,
-  //     email,
-  //     password,
+    const updatedUser = {
+      username,
+      email,
+      password,
       
-  //   };
+    };
   
-  //   const userId = id; 
-  // console.log(userId , "grr");
-  //   fetch(`http://localhost:8000/api/users/updateMe/${userId}`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(updatedUser),
-  //   })
-  //     .then((response) => {
-  //       if (response.ok) {
-  //         console.log("User information updated successfully");
+    const userId = id; 
+  console.log(userId);
+    fetch(`http://localhost:8000/api/users/updateMe/${userId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedUser),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("User information updated successfully");
 
-  //      alert("User information updated successfully")
-  //       } else {
-  //         console.error("Failed to update user.");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error updating user:", error);
-  //     });
-  // };
+       alert("User information updated successfully")
+        } else {
+          console.error("Failed to update user.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating user:", error);
+      });
+  };
   
   return (
     <div>
@@ -68,7 +68,7 @@ const UserProfile = () => {
           <div className="userProfile">Edit profile</div>
 
           <div className="user_booking_list_container">
-            <form onSubmit={"updateInfo"}>
+            <form onSubmit={updateInfo}>
               <h4>user information</h4>
               <section>
                 <div className="form-row">
@@ -123,7 +123,7 @@ const UserProfile = () => {
                   />
                 </div>
                 <div className="form-row">
-                  <button className="form-btn" type="submit">
+                  <button className="form-btn" type="submit" >
                     Submit
                   </button>
                 </div>

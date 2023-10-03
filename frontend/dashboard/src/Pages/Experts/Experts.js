@@ -50,7 +50,7 @@ import add from "../../Assets/Icon/add.svg";
       }, [alertMessage]);
     
       if (isLoading) {
-        return <p>Loading...</p>;
+        return <div className="loader"></div>;;
       }
 
       const deleteExpert = async(id) => {
@@ -117,10 +117,9 @@ import add from "../../Assets/Icon/add.svg";
               <div>Phone</div>
               <div>Email</div>
               <div>Location</div>
-              <div>Availability</div>
               <div>experience</div>
               <div>Department</div>
-              <div>About</div>
+              <div>Review</div>
               <div>Control</div>
             </div>
             <div className="experts__data__container">
@@ -128,15 +127,14 @@ import add from "../../Assets/Icon/add.svg";
             {expertData.map((expert) => (
                   <div className="experts__data" key={expert._id}>
                     
-                    <div>{expert._id}</div>
+                    <div>{expert._id.substring(0, 10)}</div>
                     <div>{expert.expertname}</div>
                     <div>{expert.tel}</div>
                     <div>{expert.email}</div>
                     <div>{expert.location}</div>
-                    <div>{expert.availability}</div>
                     <div>{expert.experience}</div>
                     <div>{expert.department}</div>
-                    <div>{expert.about}</div>
+                    <div>{expert.review}</div>
 
                     <div className="experts__icon__container">
                       <div>

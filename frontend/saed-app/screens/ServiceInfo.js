@@ -135,6 +135,7 @@ const ServiceInfo = () => {
             fontSize: 13,
             fontWeight: 400,
             marginTop: 15,
+       
           }}
         >
           {selectedService.summary}
@@ -172,7 +173,7 @@ const ServiceInfo = () => {
         </View>
         <Text
           style={{
-            width: "95%",
+            width: "94%",
             marginLeft: 15,
             fontSize: 13,
             marginTop: 15,

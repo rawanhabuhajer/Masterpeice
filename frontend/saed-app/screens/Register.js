@@ -2,31 +2,26 @@ import React, { useState, useEffect, useContext } from "react";
 import {
   Text,
   View,
-  ScrollView,
   Pressable,
   TextInput,
   Image,
-  StatusBar,
-  Platform,
   KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
- import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
-
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
- const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
   const navigation = useNavigation();
-
 
   const fetchPost = async () => {
     try {
@@ -42,7 +37,7 @@ const Register = () => {
         const userData = response.data;
         setUserData(userData);
 
-         await AsyncStorage.setItem("user", JSON.stringify(userData));
+        await AsyncStorage.setItem("user", JSON.stringify(userData));
 
         navigation.navigate("Login");
       } else {
@@ -73,67 +68,60 @@ const Register = () => {
       {/* Main content */}
       <View
         style={{
-          flex: 1,
           backgroundColor: "white",
-          alignItems: "center",
-          justifyContent: "center",
+          flex: 1,
         }}
       >
         <View
           style={{
             marginBottom: 30,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            marginTop: 40,
+          
+            alignItems:"center"
           }}
         >
           <Image
-            style={{ width: 60, height: 70 }}
+            style={{ width: 40, height: 50 }}
             source={require("../assets/icon/logo.png")}
           />
           <Image
-            style={{ width: 80, height: 18, marginTop: 15 }}
+            style={{ width: 60, height: 13, marginTop: 15 }}
             source={require("../assets/icon/Saed.png")}
           />
         </View>
 
-        {/* Form for registration */}
+   
         <KeyboardAvoidingView>
-          <View style={{ alignItems: "center" }}>
-            {/* Title */}
+          <View style={{}}>
+            <Text
+              style={{
+                fontSize: 24,
+                color: "#041E42",
+                fontWeight:500,
+                marginLeft: 15 
+              }}
+            >
+              Sign up
+            </Text>
             <Text
               style={{
                 fontSize: 14,
-                fontWeight: 500,
-                marginTop: 12,
+                marginTop: 10,
                 color: "#041E42",
+                marginLeft: 15 
               }}
             >
-              Start your journey with best service
+              Start your journey with the best service
             </Text>
           </View>
 
-          <View style={{ marginTop: 30 }}>
-            {/* Input field for name */}
-
-            {/* <InputField
-              value={username}
-              onChangeText={(text) => setUsername(text)}
-              placeholder={"Enter your Name"}
-              user={"user"}
-            />
-            <InputField
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-              placeholder={"Enter your Email"}
-              user={"email"}
-            />
-            <InputField
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-              placeholder={"Enter your Password"}
-              user={"lock"}
-            /> */}
+          <View
+            style={{
+              marginTop: 30,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <View
               style={{
                 flexDirection: "row",
@@ -178,7 +166,7 @@ const Register = () => {
               }}
             >
               <Entypo
-                name="user"
+                name="email"
                 size={20}
                 color="#CBC7C7"
                 style={{
@@ -210,7 +198,7 @@ const Register = () => {
               }}
             >
               <Entypo
-                name="user"
+                name="lock"
                 size={20}
                 color="#CBC7C7"
                 style={{
@@ -219,8 +207,10 @@ const Register = () => {
               />
 
               <TextInput
+              secureTextEntry={true}
                 value={password}
                 onChangeText={(text) => setPassword(text)}
+                
                 style={{
                   marginVertical: 10,
                   width: 290,
@@ -242,7 +232,7 @@ const Register = () => {
               }}
             >
               <Entypo
-                name="user"
+                name="lock"
                 size={20}
                 color="#CBC7C7"
                 style={{
@@ -251,15 +241,16 @@ const Register = () => {
               />
 
               <TextInput
-                value={password}
-                onChangeText={(text) => setPassword(text)}
+              secureTextEntry={true}
+                value={confirmPassword}
+                onChangeText={(text) => setConfirmPassword(text)}
                 style={{
                   marginVertical: 10,
                   width: 290,
                   fontSize: 14,
                   paddingLeft: 5,
                 }}
-                placeholder={"Enter your Password"}
+                placeholder={"Confirm your Password"}
               />
             </View>
           </View>
@@ -305,7 +296,7 @@ const Register = () => {
                   fontWeight: 500,
                 }}
               >
-                title
+                Register
               </Text>
             </TouchableOpacity>
           </View>
@@ -314,7 +305,7 @@ const Register = () => {
           <Pressable
             onPress={() => navigation.navigate("Login")}
             style={{
-              marginTop: 15,
+              marginTop: 20,
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
@@ -322,12 +313,12 @@ const Register = () => {
             }}
           >
             <Text style={{ textAlign: "center", color: "gray", fontSize: 14 }}>
-              Already have an account?
+              Already have an account ? 
             </Text>
             <Text
-              style={{ textAlign: "center", color: "#2DBCCF", fontSize: 14 }}
+              style={{ textAlign: "center", color: "#2DBCCF", fontSize: 14 , marginLeft:4}}
             >
-              Login here!
+               Login here!
             </Text>
           </Pressable>
         </KeyboardAvoidingView>

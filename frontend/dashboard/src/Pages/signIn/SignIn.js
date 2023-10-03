@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./SignIn.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const SignIn = () => {
   const Navigate = useNavigate()
   const [email, setEmail] = useState('');
@@ -25,7 +25,11 @@ const SignIn = () => {
     if (res.ok) {
     localStorage.setItem('user',JSON.stringify(data))
     localStorage.getItem("user");
+
+ 
       Navigate('/home')
+
+     
     } else {
       setError(data.error);
     }
@@ -43,6 +47,7 @@ const SignIn = () => {
 
   return (
     <>
+
       <div className="signin__container">
         <form onSubmit={submitHandler}>
           <div className="signin">Sign in</div>
@@ -64,7 +69,10 @@ const SignIn = () => {
             { error && <div className="signup__error__div">{error}</div>}
           <button>sign in</button>
         </form>
+          <p className="signiup_transform" style={{fontSize:"12px" , marginLeft:"10px"}}> If you don’t have an account register<br></br>
+            You can  <span style={{color:"#62DFF0"}}><Link style={{color:"#62DFF0", textDecoration: "none"}} to={"/"}> Register here !</Link></span></p>
       </div>
+
     </>
   );
 };

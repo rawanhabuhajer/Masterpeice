@@ -2,12 +2,11 @@ const Booking = require("../models/BookingModal");
 const catchAsync = require("../utils/CatchAysnc");
 const AppError = require("../utils/AppError");
 const Service = require("../models/ServicesModal");
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const Expert = require("../models/ExpertModal");
 const User = require("../models/userModel");
 
 exports.getAllBookings = async (req, res, next) => {
-  const bookings = await Booking.find().sort({ '_id': -1 }).limit(2);
+  const bookings = await Booking.find();
   db.student.find()
   res.status(200).json({
     status: "success",
@@ -41,9 +40,10 @@ exports.createBooking = async (req, res, next) => {
       service: serviceId,
       time,
       duration,
-      date,
       expert: expertId,
       paid,
+      date,
+      location
     } = req.body;
 
     // Populate the 'service' field by fetching the service document
@@ -63,7 +63,6 @@ exports.createBooking = async (req, res, next) => {
 
     // Calculate the price based on the service price and duration
     const price = service.servicePrice * duration;
-
     // Create a new booking document with the populated 'service' field and calculated price
     const newBooking = await Booking.create({
       user,
@@ -74,6 +73,8 @@ exports.createBooking = async (req, res, next) => {
       date,
       expert: expert,
       paid,
+      date,
+      location
     });
 
     res.status(201).json({
@@ -82,6 +83,7 @@ exports.createBooking = async (req, res, next) => {
         booking: newBooking,
       },
     });
+    
   } catch (err) {
     res.status(500).json({
       status: "error",
@@ -123,11 +125,25 @@ exports.deleteBooking = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
-// exports.createBookingCheckout = catchAsync(async (req, res, next) => {
-//   // This is only TEMPORARY, because it's UNSECURE: everyone can make bookings without paying
-//   const { service, user, price, time } = req.query;
 
-//   if (!service && !user && !price && !time) return next();
-//   await Booking.create({ service, user, price, time });
-//   // res.redirect(req.originalUrl.split('?')[0]);
-// });
+exports.getAllUserBookings = async (req, res, next) => {
+  try {
+    const userId = req.user.id; 
+    const bookings = await Booking.find({ user: userId }); 
+
+    res.status(200).json({
+      status: "success",
+      results: bookings.length,
+      data: {
+        bookings,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "Error retrieving bookings",
+      error: err.message,
+    });
+  }
+};
+

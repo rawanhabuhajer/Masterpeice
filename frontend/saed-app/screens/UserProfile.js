@@ -9,6 +9,7 @@ import {
   ImageBackground,
   Dimensions,
   Platform,
+  TouchableOpacity
 } from "react-native";
 
 import { MaterialIcons } from "@expo/vector-icons";
@@ -98,98 +99,7 @@ const UserProfile = () => {
           ></View>
           <Text>{user.username}</Text>
         </View>
-        <View>
-          <Text
-            style={{
-              fontWeight: 500,
-              marginLeft: 15,
-              marginTop: 25,
-            }}
-          >
-            Current booking
-          </Text>
-          <View
-            style={{
-              width: "85%",
-              backgroundColor: "#fff",
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              alignSelf: "center",
-              borderRadius: 25,
-              shadowColor: "black",
-              shadowOffset: { width: 0, height: 8 },
-              shadowOpacity: 0.1,
-              shadowRadius: 4,
-              elevation: 4,
-              borderWidth: 1,
-              borderColor: "#56E9FF",
-              borderRadius: 25,
-              marginTop: 25,
-            }}
-          >
-            <View
-              style={{
-                width: "100%",
-
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text>service type :</Text>
-              <Text>Deep cleaning</Text>
-            </View>
-            <View
-              style={{
-                width: "100%",
-
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text>Time :</Text>
-              <Text>Thursday</Text>
-            </View>
-            <View
-              style={{
-                width: "100%",
-
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text>Price :</Text>
-              <Text
-                style={{
-                  color: "green",
-                }}
-              >
-                $35
-              </Text>
-            </View>
-            <View
-              style={{
-                width: "100%",
-
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text>Expert name :</Text>
-              <Text>catrina</Text>
-            </View>
-          </View>
-        </View>
+     
 
         <Text
           style={{
@@ -200,7 +110,8 @@ const UserProfile = () => {
         >
           General setting
         </Text>
-        <View
+        <TouchableOpacity
+         onPress={() => navigation.navigate("EditProfile")}
           style={{
             width: "90%",
             display: "flex",
@@ -217,7 +128,7 @@ const UserProfile = () => {
         >
           <Text>Profile settings</Text>
           <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-        </View>
+        </TouchableOpacity>
         <View
           style={{
             width: "90%",

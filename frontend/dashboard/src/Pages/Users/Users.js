@@ -39,7 +39,7 @@ const Users = () => {
   }, []);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <div className="loader"></div>;;
   }
 
   const deleteUser = (id) => {
@@ -82,7 +82,6 @@ const Users = () => {
 
             <div className="users__list">
               <div className="users__list__title">
-                <div>Photo</div>
                 <div>User ID</div>
                 <div>Username</div>
                 <div>Email</div>
@@ -94,10 +93,8 @@ const Users = () => {
               <div className="users__data__container">
                 {userData.map((user) => (
                   <div className="users__data" key={user._id}>
-                    <div>
-                      <img src={userImg} alt="" className="user_img" />
-                    </div>
-                    <div>{user._id}</div>
+                    
+                    <div>{user._id.substring(0, 10)}</div>
                     <div>{user.username}</div>
                     <div>{user.email}</div>
                     <div>{user.role}</div>

@@ -23,7 +23,7 @@ const History = () => {
     const fetchServices = async () => {
       try {
         const response = await axios.get(
-          'https://vercel-9nlvq4v5v-rawanhabuhajer.vercel.app/api/book/userbookings'
+          'https://vercel-9nlvq4v5v-rawanhabuhajer.vercel.app/api/book'
         );
         if (response.status === 200) {
           const bookingData = response.data.data.bookings;

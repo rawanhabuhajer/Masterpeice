@@ -84,7 +84,7 @@ const Checkout = () => {
   return (
     <ScrollView
       style={{
-        backgroundColor: "#F9FEFF",
+        backgroundColor: "#FFF",
       }}
     >
       <View
@@ -98,15 +98,10 @@ const Checkout = () => {
           marginTop: 15,
         }}
       >
-        <MaterialIcons name="keyboard-arrow-left" size={24} color="black" />
+        <MaterialIcons name="keyboard-arrow-left" size={24} color="white" />
         <Text style={{ fontWeight: 500 }}>Cheackout</Text>
-        <Image
-          source={require("../assets/icon/schedule.png")}
-          style={{
-            width: 25,
-            height: 25,
-          }}
-        />
+        <MaterialIcons name="keyboard-arrow-left" size={24} color="white" />
+
       </View>
 
       <Text style={{ fontWeight: 500, marginLeft: 15, marginTop: 10 }}>

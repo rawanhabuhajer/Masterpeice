@@ -14,5 +14,4 @@ router
   .patch(bookingController.updateBooking)
   .delete(bookingController.deleteBooking);
 
-  router.route("/userbooking").get(bookingController.getAllUserBookings)
 module.exports = router;

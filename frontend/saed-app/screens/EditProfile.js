@@ -11,6 +11,8 @@ import {
   Platform,
   TouchableOpacity,
   TextInput,
+  Alert,
+  KeyboardAvoidingView
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -21,17 +23,20 @@ import { CommonActions } from "@react-navigation/native";
 import axios from "axios";
 
 const EditProfile = () => {
+    const { user, setUser } = useContext(UserContext);
+    
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { user, setUser } = useContext(UserContext);
+
   const [error, setError] = useState(null);
 
   const fetchPatch = async () => {
     try {
-      const userId = user._id;
+      const userId = user.id;
+      console.log(userId)
       const response = await axios.patch(
-        `https://vercel-9nlvq4v5v-rawanhabuhajer.vercel.app/api/users/updateMe/${userId}`,
+        `https://vercel-git-main-rawanhabuhajer.vercel.app/api/users/updateMe/${user.id}`,
         {
           username,
           email,
@@ -39,10 +44,14 @@ const EditProfile = () => {
         }
       );
       if (response.status === 200) {
-        alert("User information updated successfully");
+        console.log("User information updated successfully");
+        setEmail("")
+        setPassword("")
+        setUsername("")
+        setAlertType("success");
       } else {
         setError("Unexpected response status: " + response.status);
-        alert("error");
+       
       }
     } catch (error) {
       if (error.response) {
@@ -67,7 +76,7 @@ const EditProfile = () => {
     <>
       <ScrollView
         style={{
-          backgroundColor: "#F9FEFF",
+          backgroundColor: "#FFF",
         }}
       >
         <View
@@ -85,6 +94,7 @@ const EditProfile = () => {
           <MaterialIcons name="keyboard-arrow-left" size={24} color="white" />
           <Text style={{ fontWeight: 500 }}>Edit Profile</Text>
         </View>
+        <KeyboardAvoidingView behavior="padding">
 
         <View
           style={{
@@ -197,7 +207,9 @@ const EditProfile = () => {
           >
             <Button title={"Save changes"} onPress={updateInfo} />
           </View>
+          
         </View>
+        </KeyboardAvoidingView>
       </ScrollView>
     </>
   );

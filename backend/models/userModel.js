@@ -68,17 +68,4 @@ userSchema.statics.signin = async function (email, password) {
   return user;
 };
 
-// protect token from change password
-// userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
-//   if (this.passwordChangedAt) {
-//     const changedTimestamp = parseInt(
-//       this.passwordChangedAt.getTime() / 1000,
-//       10
-//     );
-
-//     return JWTTimestamp < changedTimestamp;
-//   }
-// //  False means NOT changed
-//   return false;
-// };
 module.exports = mongoose.model("User", userSchema);

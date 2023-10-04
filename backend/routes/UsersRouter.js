@@ -6,7 +6,6 @@ const router = express.Router();
 router
   .route("/")
   .get(UsersController.getAllUsers)
-  // .get(AuthController.protect, UsersController.getAllUsers)
   .post(UsersController.createUser);
 
 router
@@ -14,8 +13,6 @@ router
   .get(UsersController.getUser)
   .patch(UsersController.updateUser)
   .delete(
-    // AuthController.protect,
-    // AuthController.restrictTo("superAdmin"),
     UsersController.deleteUser
   );
 

@@ -34,15 +34,9 @@ const Confirmed = () => {
           marginTop: 15,
         }}
       >
-        <MaterialIcons name="keyboard-arrow-left" size={24} color="black" />
+        <MaterialIcons name="keyboard-arrow-left" size={24} color="white" />
         <Text style={{ fontWeight: 500 }}>Order Status</Text>
-        <Image
-          source={require("../assets/icon/schedule.png")}
-          style={{
-            width: 25,
-            height: 25,
-          }}
-        />
+        <MaterialIcons name="keyboard-arrow-left" size={24} color="white" />
       </View>
       <View
         style={{

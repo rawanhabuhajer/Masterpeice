@@ -6,7 +6,6 @@ const router = express.Router();
 router
   .route("/")
   .get(ExpertsController.getAllExperts)
-  //  .get(AuthController.protect, UsersController.getAllUsers)
   .post(ExpertsController.createExpert);
 
 router

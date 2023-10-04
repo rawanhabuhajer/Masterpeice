@@ -44,18 +44,13 @@ const BookService = () => {
             alignItems: "center",
             justifyContent: "space-between",
             paddingHorizontal: 15,
-            paddingVertical: 35,
+            paddingVertical: 25,
           }}
         >
           <MaterialIcons name="keyboard-arrow-left" size={24} color="black" />
           <Text style={{ fontWeight: 500 }}>prepare booking</Text>
-          <Image
-            source={require("../assets/icon/schedule.png")}
-            style={{
-              width: 25,
-              height: 25,
-            }}
-          />
+          <MaterialIcons name="keyboard-arrow-left" size={24} color="white" />
+
         </View>
         <View
           style={{
@@ -229,7 +224,7 @@ const BookService = () => {
             marginTop: 25,
           }}
         >
-          Adress
+          Address
         </Text>
         <TextInput
           onChangeText={(text) => setLocation(text)}

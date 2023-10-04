@@ -55,7 +55,7 @@ const UserProfile = () => {
             }}
           >
             <Image
-              source={require("../assets/img/profile.jpg")}
+              source={require("../assets/img/women.png")}
               style={{
                 width: 140,
                 height: 140,

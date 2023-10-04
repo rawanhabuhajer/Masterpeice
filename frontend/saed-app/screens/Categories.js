@@ -103,19 +103,14 @@ const Categories = () => {
             paddingVertical: 25,
           }}
         >
-          <MaterialIcons name="keyboard-arrow-left" size={24} color="black" />
+          <MaterialIcons name="keyboard-arrow-left" size={24} color="#fff" />
           <Text style={{ fontWeight: 500 }}>Services category</Text>
           <TouchableOpacity
            onPress={() => navigation.navigate("History")}
         
           >
-          <Image
-             source={require("../assets/icon/schedule.png")}
-            style={{
-              width: 25,
-              height: 25,
-            }}
-          />
+          
+          <MaterialIcons name="keyboard-arrow-left" size={24} color="#fff" />
           </TouchableOpacity>
           
         </View>

@@ -15,7 +15,13 @@ import UserProfile from "../screens/UserProfile";
 import Worker from "../screens/Worker";
 import BookService from "../screens/BookService";
 import History from "../screens/History";
-import { AntDesign, Ionicons, Entypo } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Ionicons,
+  Entypo,
+  FontAwesome5,
+  Feather,
+} from "@expo/vector-icons";
 import ServiceInfo from "../screens/ServiceInfo";
 import { UserContext } from "../context/AuthContext";
 import EditProfile from "../screens/EditProfile";
@@ -58,22 +64,6 @@ const StackNavigator = () => {
         />
 
         <Tab.Screen
-          name="Profile"
-          component={UserProfile}
-          options={{
-            headerShown: false,
-            tabBarLabel: "Profile",
-            tabBarLabelStyle: { color: "#434343" },
-            tabBarIcon: ({ focused }) =>
-              focused ? (
-                <Ionicons name="person" size={24} color="#00E1FF" />
-              ) : (
-                <Ionicons name="person-outline" size={24} color="#313131" />
-              ),
-          }}
-        />
-
-        <Tab.Screen
           name="Categories"
           component={Categories}
           options={{
@@ -97,9 +87,24 @@ const StackNavigator = () => {
             headerShown: false,
             tabBarIcon: ({ focused }) =>
               focused ? (
-                <AntDesign name="user" size={24} color="#00E1FF" />
+                <Feather name="users" size={24} color="#00E1FF" />
               ) : (
-                <AntDesign name="user" size={24} color="#313131" />
+                <Feather name="users" size={24} color="#313131" />
+              ),
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={UserProfile}
+          options={{
+            headerShown: false,
+            tabBarLabel: "Profile",
+            tabBarLabelStyle: { color: "#434343" },
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <Ionicons name="person" size={24} color="#00E1FF" />
+              ) : (
+                <Ionicons name="person-outline" size={24} color="#313131" />
               ),
           }}
         />
@@ -110,50 +115,9 @@ const StackNavigator = () => {
     // <UserProvider>
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ headerShown: false }}
-        />
-      <Stack.Screen
-          name="EditProfile"
-          component={EditProfile}
-          options={{ headerShown: false }}
-        />
-      <Stack.Screen
-          name="UserProfile"
-          component={UserProfile}
-          options={{ headerShown: false }}
-        />
-      <Stack.Screen
+        <Stack.Screen
           name="Splash"
           component={Splash}
-          options={{ headerShown: false }}
-        />
-
-    
-      <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ headerShown: false }}
-        />
-      <Stack.Screen
-          name="Confirmed"
-          component={Confirmed}
-          options={{ headerShown: false }}
-        />
-
-      <Stack.Screen
-          name="Checkout"
-          component={Checkout}
-          options={{ headerShown: false }}
-        />
-  
-     
-  
-      <Stack.Screen
-          name="Worker"
-          component={Worker}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -161,15 +125,57 @@ const StackNavigator = () => {
           component={Register}
           options={{ headerShown: false }}
         />
-    
-
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Main"
           component={BottomTabs}
           options={{ headerShown: false }}
         />
 
- 
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ExpertProfile"
+          component={ExpertProfile}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="UserProfile"
+          component={UserProfile}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Confirmed"
+          component={Confirmed}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Checkout"
+          component={Checkout}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Worker"
+          component={Worker}
+          options={{ headerShown: false }}
+        />
 
         <Stack.Screen
           name="History"
@@ -182,14 +188,6 @@ const StackNavigator = () => {
           component={Categories}
           options={{ headerShown: false }}
         />
-   
-        <Stack.Screen
-          name="ExpertProfile"
-          component={ExpertProfile}
-          options={{ headerShown: false }}
-        />
-
-   
 
         <Stack.Screen
           name="ServiceInfo"
@@ -202,8 +200,6 @@ const StackNavigator = () => {
           component={BookService}
           options={{ headerShown: false }}
         />
-
-      
       </Stack.Navigator>
     </NavigationContainer>
     /* </UserProvider> */

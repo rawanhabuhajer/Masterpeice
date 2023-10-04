@@ -15,7 +15,6 @@ router
   .patch( upload.single("image") , ServicesController.updateService
   )
   .delete(
-    // AuthController.protect,
     ServicesController.deleteService
   );
 

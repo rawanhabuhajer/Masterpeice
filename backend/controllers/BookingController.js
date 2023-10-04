@@ -7,7 +7,6 @@ const User = require("../models/userModel");
 
 exports.getAllBookings = async (req, res, next) => {
   const bookings = await Booking.find();
-  db.student.find()
   res.status(200).json({
     status: "success",
     results: bookings.length,
@@ -19,7 +18,6 @@ exports.getAllBookings = async (req, res, next) => {
 
 exports.getBooking = catchAsync(async (req, res, next) => {
   const booking = await Booking.findById(req.params.id);
-
 
   if (!booking) {
     new AppError("No booking found with that ID", 404);
@@ -46,7 +44,7 @@ exports.createBooking = async (req, res, next) => {
       location
     } = req.body;
 
-    // Populate the 'service' field by fetching the service document
+    // Populate the 'service , expert , user' 
     const service = await Service.findById(serviceId);
     const expert = await Expert.findById(expertId);
     const user = await User.findById(userId);
@@ -63,7 +61,7 @@ exports.createBooking = async (req, res, next) => {
 
     // Calculate the price based on the service price and duration
     const price = service.servicePrice * duration;
-    // Create a new booking document with the populated 'service' field and calculated price
+    // Create a new booking document 
     const newBooking = await Booking.create({
       user,
       service: service,
@@ -125,25 +123,4 @@ exports.deleteBooking = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
-
-exports.getAllUserBookings = async (req, res, next) => {
-  try {
-    const userId = req.user.id; 
-    const bookings = await Booking.find({ user: userId }); 
-
-    res.status(200).json({
-      status: "success",
-      results: bookings.length,
-      data: {
-        bookings,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "Error retrieving bookings",
-      error: err.message,
-    });
-  }
-};
 

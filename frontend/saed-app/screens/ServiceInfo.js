@@ -191,7 +191,7 @@ const ServiceInfo = () => {
             marginTop: 35,
           }}
         >
-          Related services
+          Other services
         </Text>
 
         <View

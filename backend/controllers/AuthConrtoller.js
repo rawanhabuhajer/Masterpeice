@@ -4,7 +4,7 @@ const { promisify } = require("util");
 require("dotenv").config();
 
 const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "5d" });
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "50d" });
 };
 
 //signup controller
@@ -12,14 +12,13 @@ const createToken = (_id) => {
 exports.signup = async (req, res) => {
   const { username, email, password } = req.body;
   const role = req.body.role;
-  const passwordChangedAt = req.body.passwordChangedAt;
+
   try {
     const user = await User.signup(
       username,
       email,
       password
-      // role,
-      // passwordChangedAt
+      
     );
     const token = createToken(user._id);
     res.status(200).json({ user, token });

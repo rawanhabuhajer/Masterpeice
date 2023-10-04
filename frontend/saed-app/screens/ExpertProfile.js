@@ -101,10 +101,10 @@ const ExpertProfile = () => {
               />
             ) : (
               <Image
-                source={require("../assets/img/expert.png")}
+                source={require("../assets/img/women.png")}
                 style={{
-                  width: 150,
-                  height: 150,
+                  width: 115,
+                  height: 115,
                   resizeMode: "contain",
                   borderRadius: 150,
                 }}
@@ -386,12 +386,12 @@ const ExpertProfile = () => {
         <View
           style={{
             display: "flex",
-            flexDirection: "row",
+        
             flexWrap: "wrap",
-            gap: 25,
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 25,
+            gap: 5,
+           
+            marginTop: 15,
+            marginLeft:15
           }}
         >
           {selectedExpert.services.map((service, index) => (
@@ -400,19 +400,11 @@ const ExpertProfile = () => {
               style={{
                 display: "flex",
                 gap: 10,
-                alignItems: "center",
-                justifyContent: "center",
+                
               }}
             >
-              <Image
-                source={require("../assets/icon/landry-home.png")}
-                style={{
-                  width: 55,
-                  height: 55,
-                  resizeMode: "contain",
-                }}
-              />
-              <Text style={{ fontSize: 10 }}>{service}</Text>
+              
+              <Text style={{ fontSize: 13 }}>- {service}</Text>
             </View>
           ))}
         </View>

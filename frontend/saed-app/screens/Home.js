@@ -36,19 +36,19 @@ const Home = () => {
     require("../assets/img/farm.png"),
   ];
   const popularImages = [
-    require("../assets/icon/book-placed.png"),
-    require("../assets/img/lundry.png"),
-    require("../assets/img/farm.png"),
+    require("../assets/img/after-slider.jpg"),
+    require("../assets/img/car-sliderjpg.jpg"),
+    require("../assets/img/pest-slider.png"),
   ];
   const trendingImages = [
-    require("../assets/img/girl2.png"),
+    require("../assets/img/window-slider.jpg"),
     require("../assets/img/lundry.png"),
     require("../assets/img/farm.png"),
   ];
   const saleImages = [
-    require("../assets/img/girl2.png"),
-    require("../assets/img/lundry.png"),
-    require("../assets/img/farm.png"),
+    require("../assets/img/orgnize.png"),
+    require("../assets/img/farms.png"),
+    require("../assets/img/pest-slider.png"),
   ];
   const { width } = Dimensions.get("window");
   const height = (width * 80) / 100;
@@ -128,18 +128,12 @@ const Home = () => {
             style={{
               display: "flex",
               alignItems:"flex-end",
-              marginTop:35,
+              marginTop:55,
               marginRight:20
             }}
           >
         
-          <Image
-            source={require("../assets/icon/schedule.png")}
-            style={{
-              width: 25,
-              height: 25,
-            }}
-          />
+        
         </View>
         
           <View
